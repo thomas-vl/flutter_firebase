@@ -1,3 +1,4 @@
+import 'package:club_cloud/ui/home/home.dart';
 import 'package:club_cloud/ui/login/login.dart';
 import 'package:club_cloud/ui/main/bloc/app_bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -12,9 +13,11 @@ class AppRouterDelegate extends RouterDelegate<AppState>
 
   List<Page> _getPages(AppState state) {
     List<Page> pages = [];
-    pages.add(LoginPage.page());
-    //   signedIn: () => pages.add(LoginPage.page()),
-    // );
+    if (state.status == AppStatus.authenticated) {
+      pages.add(HomePage.page());
+    } else {
+      pages.add(LoginPage.page());
+    }
     return pages;
   }
 
