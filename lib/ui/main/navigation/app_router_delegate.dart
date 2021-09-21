@@ -13,10 +13,11 @@ class AppRouterDelegate extends RouterDelegate<AppState>
 
   List<Page> _getPages(AppState state) {
     List<Page> pages = [];
+    print('test');
     if (state.status == AppStatus.authenticated) {
       pages.add(HomePage.page());
     } else {
-      pages.add(LoginPage.page());
+      pages.add(Login.page());
     }
     return pages;
   }
@@ -37,7 +38,7 @@ class AppRouterDelegate extends RouterDelegate<AppState>
   }
 
   @override
-  Future<void> setNewRoutePath(AppState config) async {
+  Future<void> setNewRoutePath(AppState state) async {
     notifyListeners();
   }
 }

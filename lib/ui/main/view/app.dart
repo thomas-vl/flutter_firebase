@@ -1,5 +1,5 @@
 import 'package:club_cloud/services/auth.dart';
-import 'package:club_cloud/ui/main/navigation/app_route_information_parser.dart';
+import 'package:club_cloud/ui/main/navigation/app_information_parser.dart';
 import 'package:club_cloud/ui/main/navigation/app_router_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('hallo');
     return RepositoryProvider.value(
       value: _authentication,
       child: BlocProvider(
@@ -32,9 +31,8 @@ class App extends StatelessWidget {
 class AppView extends StatelessWidget {
   AppView({Key? key}) : super(key: key);
 
-  AppRouterDelegate _routerDelegate = AppRouterDelegate();
-  AppRouteInformationParser _routeInformationParser =
-      AppRouteInformationParser();
+  final AppRouterDelegate _routerDelegate = AppRouterDelegate();
+  final AppInformationParser _routeInformationParser = AppInformationParser();
 
   @override
   Widget build(BuildContext context) {

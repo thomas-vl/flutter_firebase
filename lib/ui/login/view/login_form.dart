@@ -145,8 +145,7 @@ class _SignUpButton extends StatelessWidget {
     final theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
-      onPressed: () =>
-          {}, //Navigator.of(context).push<void>(SignUpPage.route()),
+      onPressed: () => context.read<LoginCubit>().signUp(),
       child: Text(
         'CREATE ACCOUNT',
         style: TextStyle(color: theme.primaryColor),
