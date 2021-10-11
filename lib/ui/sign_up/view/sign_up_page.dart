@@ -1,4 +1,4 @@
-import 'package:club_cloud/services/auth.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../sign_up.dart';
@@ -19,7 +19,8 @@ class SignUpPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: BlocProvider<SignUpCubit>(
-          create: (_) => SignUpCubit(context.read<Authentication>()),
+          create: (_) => SignUpCubit(
+              authentication: context.read<AuthenticationRepository>()),
           child: const SignUpForm(),
         ),
       ),

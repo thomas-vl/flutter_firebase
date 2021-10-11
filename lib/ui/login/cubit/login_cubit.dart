@@ -1,14 +1,17 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:club_cloud/services/auth.dart';
+//import 'package:club_cloud/blocs/blocs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authentication) : super(const LoginState());
+  LoginCubit({required AuthenticationRepository authentication})
+      : _authentication = authentication,
+        super(const LoginState());
 
-  final Authentication _authentication;
+  final AuthenticationRepository _authentication;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);

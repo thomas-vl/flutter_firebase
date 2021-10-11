@@ -1,12 +1,12 @@
-import 'package:club_cloud/models/user.dart';
+import 'models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class LogInWithEmailAndPasswordFailure implements Exception {}
 
-class Authentication {
+class AuthenticationRepository {
   /// {@macro authentication_repository}
-  Authentication({
+  AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
 

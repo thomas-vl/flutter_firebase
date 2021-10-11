@@ -1,5 +1,5 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:club_cloud/services/auth.dart';
 import 'package:club_cloud/services/form_inputs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -7,9 +7,11 @@ import 'package:formz/formz.dart';
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this._authentication) : super(const SignUpState());
+  SignUpCubit({required AuthenticationRepository authentication})
+      : _authentication = authentication,
+        super(const SignUpState());
 
-  final Authentication _authentication;
+  final AuthenticationRepository _authentication;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -69,3 +71,5 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
   }
 }
+
+class Authentication {}

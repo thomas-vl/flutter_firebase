@@ -1,8 +1,7 @@
-import 'package:club_cloud/services/auth.dart';
+import 'package:club_cloud/ui/login/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../login.dart';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -11,17 +10,13 @@ class LoginPage extends StatelessWidget {
   static Page page() => const MaterialPage<void>(child: LoginPage());
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: const Padding(
-        padding: EdgeInsets.all(8),
-        child: LoginForm(),
-        //BlocProvider(
-        //create: (_) => LoginCubit(context.read<Authentication>()),
-        //child: const LoginForm(),
-        //),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        body: BlocProvider(
+          create: (context) => LoginCubit(
+            authentication:
+                RepositoryProvider.of<AuthenticationRepository>(context),
+          ),
+          child: const Center(child: LoginForm()),
+        ),
+      );
 }
