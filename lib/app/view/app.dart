@@ -13,20 +13,26 @@ class App extends StatelessWidget {
         super(key: key);
 
   final AuthenticationRepository _authentication;
-
   final routerDelegate = BeamerDelegate(
     guards: [
       // Guard /logged_in_page by beaming to /login if the user is unauthenticated:
       BeamGuard(
         pathBlueprints: ['/home'],
         check: (context, state) =>
-            context.select((AuthBloc auth) => !auth.isAuthenticated()),
+            context.select((AuthBloc auth) => auth.isAuthenticated()),
         beamToNamed: '/login',
+      ),
+      BeamGuard(
+        pathBlueprints: ['/login'],
+        check: (context, state) {
+          return context.select((AuthBloc auth) => !auth.isAuthenticated());
+        },
+        beamToNamed: '/home',
       ),
     ],
     initialPath: '/home',
     locationBuilder: BeamerLocationBuilder(beamLocations: [
-      AuthLocation(),
+      AppLocations(),
       //AppLocation(),
     ]),
   );

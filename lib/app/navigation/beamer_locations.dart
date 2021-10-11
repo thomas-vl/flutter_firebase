@@ -4,21 +4,14 @@ import 'package:club_cloud/ui/login/view/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthLocation extends BeamLocation<BeamState> {
-  AuthLocation() : super();
+class AppLocations extends BeamLocation<BeamState> {
+  AppLocations() : super();
 
   List<String> get pathPatterns => [
         '/home',
         '/login',
         '/logged_in_page',
       ];
-
-  @override
-  // Widget builder(BuildContext context, Widget navigator) {
-  //   // TODO: implement builder
-  //   //print(context.read<Authentication>());
-  //   return super.builder(context, navigator);
-  // }
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
@@ -38,6 +31,5 @@ class AuthLocation extends BeamLocation<BeamState> {
   }
 
   @override
-  // TODO: implement pathBlueprints
   List<String> get pathBlueprints => ['/home', '/login'];
 }

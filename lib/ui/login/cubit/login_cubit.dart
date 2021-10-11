@@ -1,6 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
-//import 'package:club_cloud/blocs/blocs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
@@ -31,6 +30,11 @@ class LoginCubit extends Cubit<LoginState> {
 
   void signUp() {
     emit(state.copyWith(signUp: true));
+  }
+
+  void logOut() async {
+    await _authentication.logOut();
+    emit(state.copyWith(logOut: true));
   }
 
   Future<void> logInWithCredentials() async {

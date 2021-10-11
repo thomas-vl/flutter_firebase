@@ -1,8 +1,7 @@
+import 'exceptions.dart';
 import 'models/models.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-
-class LogInWithEmailAndPasswordFailure implements Exception {}
 
 class AuthenticationRepository {
   /// {@macro authentication_repository}
@@ -15,7 +14,7 @@ class AuthenticationRepository {
   /// defaults to [kIsWeb]
   @visibleForTesting
   bool isWeb = kIsWeb;
-  // User user = const User(id: '');
+  User _user = const User(id: '');
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
@@ -26,16 +25,16 @@ class AuthenticationRepository {
 
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      return user;
+      _user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      return _user;
     });
   }
 
   /// Returns the current cached user.
   /// Defaults to [User.empty] if there is no cached user.
   User get currentUser {
-    print('THIS IS A BIG PROBLEM I NEED TO FIX THIS');
-    var _user = User(id: "test");
+    // var _user = User(id: "test");
+    // this._user;
     return _user;
   }
 
@@ -102,14 +101,14 @@ class AuthenticationRepository {
   ///
   /// Throws a [LogOutFailure] if an exception occurs.
   Future<void> logOut() async {
-    //   try {
-    //     await Future.wait([
-    //       _firebaseAuth.signOut(),
-    //       _googleSignIn.signOut(),
-    //     ]);
-    //   } on Exception {
-    //     throw LogOutFailure();
-    //   }
+    try {
+      await Future.wait([
+        _firebaseAuth.signOut(),
+        //_googleSignIn.signOut(),
+      ]);
+    } on Exception {
+      throw LogOutFailure();
+    }
   }
 }
 
