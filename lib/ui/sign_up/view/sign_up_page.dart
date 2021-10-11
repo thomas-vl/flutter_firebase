@@ -1,6 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../sign_up.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -16,13 +14,9 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: BlocProvider<SignUpCubit>(
-          create: (_) => SignUpCubit(
-              authentication: context.read<AuthenticationRepository>()),
-          child: const SignUpForm(),
-        ),
+      body: const Padding(
+        padding: EdgeInsets.all(8),
+        child: SignUpForm(),
       ),
     );
   }
