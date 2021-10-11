@@ -6,11 +6,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
-import 'exceptions.dart';
 import 'models/user.dart';
 
-/// Thrown during the logout process if a failure occurs.
-class LogOutFailure implements Exception {}
+part 'exceptions.dart';
 
 /// {@template authentication_repository}
 /// Repository which manages user authentication.
