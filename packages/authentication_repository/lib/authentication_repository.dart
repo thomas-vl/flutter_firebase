@@ -42,14 +42,14 @@ class AuthenticationRepository {
   ///
   /// Throws a [SignUpFailure] if an exception occurs.
   Future<void> signUp({required String email, required String password}) async {
-    // try {
-    //   await _firebaseAuth.createUserWithEmailAndPassword(
-    //     email: email,
-    //     password: password,
-    //   );
-    // } on Exception {
-    //   throw SignUpFailure();
-    // }
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on Exception {
+      throw SignUpFailure();
+    }
   }
 
   /// Starts the Sign In with Google Flow.

@@ -1,6 +1,8 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:beamer/beamer.dart';
 import 'package:club_cloud/blocs/blocs.dart';
+import 'package:club_cloud/ui/login/cubit/login_cubit.dart';
+import 'package:club_cloud/ui/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../navigation/beamer_locations.dart';
@@ -29,6 +31,14 @@ class App extends StatelessWidget {
         },
         beamToNamed: '/home',
       ),
+      BeamGuard(
+        pathBlueprints: ['/sign_up'],
+        check: (context, state) => context.select((SignUpCubit signUp) {
+          print('SignUp Status ' + signUp.isSignedUp().toString());
+          return !signUp.isSignedUp();
+        }),
+        beamToNamed: '/home',
+      )
     ],
     initialPath: '/home',
     locationBuilder: BeamerLocationBuilder(beamLocations: [
@@ -41,8 +51,13 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: _authentication,
-      child: BlocProvider(
-        create: (_) => AuthBloc(authentication: _authentication),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) => AuthBloc(authentication: _authentication)),
+          BlocProvider(
+              create: (_) => SignUpCubit(authentication: _authentication)),
+        ],
         child: BeamerProvider(
           routerDelegate: routerDelegate,
           child: MaterialApp.router(

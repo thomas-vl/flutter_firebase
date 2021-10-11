@@ -1,8 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:club_cloud/ui/home/home.dart';
 import 'package:club_cloud/ui/login/view/login_page.dart';
+import 'package:club_cloud/ui/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppLocations extends BeamLocation<BeamState> {
   AppLocations() : super();
@@ -10,7 +10,7 @@ class AppLocations extends BeamLocation<BeamState> {
   List<String> get pathPatterns => [
         '/home',
         '/login',
-        '/logged_in_page',
+        '/sign_up',
       ];
 
   @override
@@ -27,9 +27,15 @@ class AppLocations extends BeamLocation<BeamState> {
           title: 'Login',
           child: const LoginPage(),
         ),
+      if (state.uri.pathSegments.contains('sign_up'))
+        BeamPage(
+          key: const ValueKey('sign_up'),
+          title: 'Sign Up',
+          child: const SignUpPage(),
+        ),
     ];
   }
 
   @override
-  List<String> get pathBlueprints => ['/home', '/login'];
+  List<String> get pathBlueprints => ['/home', '/login', '/sign_up'];
 }

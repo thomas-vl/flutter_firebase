@@ -57,6 +57,8 @@ class SignUpCubit extends Cubit<SignUpState> {
     ));
   }
 
+  bool isSignedUp() => state.status == FormzStatus.submissionSuccess;
+
   Future<void> signUpFormSubmitted() async {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
@@ -71,5 +73,3 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
   }
 }
-
-class Authentication {}

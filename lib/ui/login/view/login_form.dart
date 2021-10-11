@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:club_cloud/ui/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,7 +146,7 @@ class _SignUpButton extends StatelessWidget {
     final theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
-      onPressed: () => context.read<LoginCubit>().signUp(),
+      onPressed: () => Beamer.of(context).beamToNamed('/sign_up'),
       child: Text(
         'CREATE ACCOUNT',
         style: TextStyle(color: theme.primaryColor),
