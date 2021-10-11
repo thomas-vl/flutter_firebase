@@ -1,28 +1,48 @@
-import 'exceptions.dart';
-import 'models/models.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:meta/meta.dart';
+
+import 'exceptions.dart';
+import 'models/user.dart';
+
+/// Thrown during the logout process if a failure occurs.
+class LogOutFailure implements Exception {}
+
+/// {@template authentication_repository}
+/// Repository which manages user authentication.
+/// {@endtemplate}
 class AuthenticationRepository {
   /// {@macro authentication_repository}
   AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
-  }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;
+    GoogleSignIn? googleSignIn,
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+
+  final firebase_auth.FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
+
+  User _user = User(id: '');
 
   /// Whether or not the current environment is web
   /// Should only be overriden for testing purposes. Otherwise,
   /// defaults to [kIsWeb]
   @visibleForTesting
   bool isWeb = kIsWeb;
-  User _user = const User(id: '');
+
+  /// User cache key.
+  /// Should only be used for testing purposes.
+  @visibleForTesting
+  static const userCacheKey = '__user_cache_key__';
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
   ///
   /// Emits [User.empty] if the user is not authenticated.
-
-  final firebase_auth.FirebaseAuth _firebaseAuth;
-
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       _user = firebaseUser == null ? User.empty : firebaseUser.toUser;
@@ -33,22 +53,22 @@ class AuthenticationRepository {
   /// Returns the current cached user.
   /// Defaults to [User.empty] if there is no cached user.
   User get currentUser {
-    // var _user = User(id: "test");
-    // this._user;
     return _user;
   }
 
   /// Creates a new user with the provided [email] and [password].
   ///
-  /// Throws a [SignUpFailure] if an exception occurs.
+  /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
   Future<void> signUp({required String email, required String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } on Exception {
-      throw SignUpFailure();
+    } on FirebaseAuthException catch (e) {
+      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const SignUpWithEmailAndPasswordFailure();
     }
   }
 
@@ -56,27 +76,29 @@ class AuthenticationRepository {
   ///
   /// Throws a [LogInWithGoogleFailure] if an exception occurs.
   Future<void> logInWithGoogle() async {
-    // try {
-    //   late final firebase_auth.AuthCredential credential;
-    //   if (isWeb) {
-    //     final googleProvider = firebase_auth.GoogleAuthProvider();
-    //     final userCredential = await _firebaseAuth.signInWithPopup(
-    //       googleProvider,
-    //     );
-    //     credential = userCredential.credential!;
-    //   } else {
-    //     final googleUser = await _googleSignIn.signIn();
-    //     final googleAuth = await googleUser!.authentication;
-    //     credential = firebase_auth.GoogleAuthProvider.credential(
-    //       accessToken: googleAuth.accessToken,
-    //       idToken: googleAuth.idToken,
-    //     );
-    //   }
+    try {
+      late final firebase_auth.AuthCredential credential;
+      if (isWeb) {
+        final googleProvider = firebase_auth.GoogleAuthProvider();
+        final userCredential = await _firebaseAuth.signInWithPopup(
+          googleProvider,
+        );
+        credential = userCredential.credential!;
+      } else {
+        final googleUser = await _googleSignIn.signIn();
+        final googleAuth = await googleUser!.authentication;
+        credential = firebase_auth.GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+      }
 
-    //   await _firebaseAuth.signInWithCredential(credential);
-    // } catch (_) {
-    //   throw LogInWithGoogleFailure();
-    // }
+      await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithGoogleFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithGoogleFailure();
+    }
   }
 
   /// Signs in with the provided [email] and [password].
@@ -91,8 +113,10 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on Exception {
-      throw LogInWithEmailAndPasswordFailure();
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithEmailAndPasswordFailure();
     }
   }
 
@@ -104,9 +128,9 @@ class AuthenticationRepository {
     try {
       await Future.wait([
         _firebaseAuth.signOut(),
-        //_googleSignIn.signOut(),
+        _googleSignIn.signOut(),
       ]);
-    } on Exception {
+    } catch (_) {
       throw LogOutFailure();
     }
   }
@@ -114,6 +138,6 @@ class AuthenticationRepository {
 
 extension on firebase_auth.User {
   User get toUser {
-    return User(id: uid, email: email);
+    return User(id: uid, email: email, name: displayName, photo: photoURL);
   }
 }

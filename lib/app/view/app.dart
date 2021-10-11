@@ -1,7 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:beamer/beamer.dart';
 import 'package:club_cloud/blocs/blocs.dart';
-import 'package:club_cloud/ui/login/cubit/login_cubit.dart';
 import 'package:club_cloud/ui/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,10 +32,8 @@ class App extends StatelessWidget {
       ),
       BeamGuard(
         pathBlueprints: ['/sign_up'],
-        check: (context, state) => context.select((SignUpCubit signUp) {
-          print('SignUp Status ' + signUp.isSignedUp().toString());
-          return !signUp.isSignedUp();
-        }),
+        check: (context, state) =>
+            context.select((SignUpCubit signUp) => !signUp.isSignedUp()),
         beamToNamed: '/home',
       )
     ],
