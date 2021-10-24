@@ -1,4 +1,4 @@
-part of 'authentication_repository.dart';
+part of 'firebase_auth_repository.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   /// {@macro sign_up_with_email_and_password_failure}

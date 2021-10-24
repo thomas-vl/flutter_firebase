@@ -13,9 +13,9 @@ part 'exceptions.dart';
 /// {@template authentication_repository}
 /// Repository which manages user authentication.
 /// {@endtemplate}
-class AuthenticationRepository {
+class FirebaseAuthRepository {
   /// {@macro authentication_repository}
-  AuthenticationRepository({
+  FirebaseAuthRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
@@ -24,7 +24,7 @@ class AuthenticationRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  User _user = User(id: '');
+  User _user = const User(id: '');
 
   /// Whether or not the current environment is web
   /// Should only be overriden for testing purposes. Otherwise,

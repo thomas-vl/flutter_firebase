@@ -1,7 +1,7 @@
 import 'package:club_cloud/ui/login/cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firebase_auth_repository/firebase_auth_repository.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
         body: BlocProvider(
           create: (context) => LoginCubit(
             authentication:
-                RepositoryProvider.of<AuthenticationRepository>(context),
+                RepositoryProvider.of<FirebaseAuthRepository>(context),
           ),
           child: const Center(child: LoginForm()),
         ),

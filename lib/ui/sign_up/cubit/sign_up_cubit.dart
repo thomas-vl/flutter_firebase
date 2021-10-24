@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firebase_auth_repository/firebase_auth_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:club_cloud/services/form_inputs.dart';
 import 'package:equatable/equatable.dart';
@@ -7,11 +7,11 @@ import 'package:formz/formz.dart';
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit({required AuthenticationRepository authentication})
+  SignUpCubit({required FirebaseAuthRepository authentication})
       : _authentication = authentication,
         super(const SignUpState());
 
-  final AuthenticationRepository _authentication;
+  final FirebaseAuthRepository _authentication;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -58,7 +58,6 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   bool isSignedUp() {
-    print(state);
     return state.status == FormzStatus.submissionSuccess;
   }
 

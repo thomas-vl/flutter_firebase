@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:authentication_repository/authentication_repository.dart';
-import 'package:authentication_repository/models/user.dart';
+import 'package:firebase_auth_repository/firebase_auth_repository.dart';
+import 'package:firebase_auth_repository/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({required AuthenticationRepository authentication})
+  AuthBloc({required FirebaseAuthRepository authentication})
       : _authentication = authentication,
         super(
           authentication.currentUser.isNotEmpty
@@ -20,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _userSubscription = _authentication.user.listen(_onUserChanged);
   }
 
-  final AuthenticationRepository _authentication;
+  final FirebaseAuthRepository _authentication;
   late final StreamSubscription<User> _userSubscription;
 
   void _onUserChanged(User user) => add(AppUserChanged(user));

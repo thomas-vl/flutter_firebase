@@ -1,4 +1,4 @@
-import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firebase_auth_repository/firebase_auth_repository.dart';
 import 'package:beamer/beamer.dart';
 import 'package:club_cloud/blocs/blocs.dart';
 import 'package:club_cloud/ui/sign_up/sign_up.dart';
@@ -9,11 +9,11 @@ import '../navigation/beamer_locations.dart';
 class App extends StatelessWidget {
   App({
     Key? key,
-    required AuthenticationRepository authentication,
+    required FirebaseAuthRepository authentication,
   })  : _authentication = authentication,
         super(key: key);
 
-  final AuthenticationRepository _authentication;
+  final FirebaseAuthRepository _authentication;
   final routerDelegate = BeamerDelegate(
     guards: [
       // Guard /logged_in_page by beaming to /login if the user is unauthenticated:
