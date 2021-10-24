@@ -1,7 +1,5 @@
 import 'package:beamer/beamer.dart';
-import 'package:club_cloud/ui/home/home.dart';
-import 'package:club_cloud/ui/login/view/login_page.dart';
-import 'package:club_cloud/ui/sign_up/sign_up.dart';
+import 'package:club_cloud/presentation/pages.dart';
 import 'package:flutter/material.dart';
 
 class AppLocations extends BeamLocation<BeamState> {

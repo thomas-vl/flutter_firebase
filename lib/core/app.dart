@@ -1,10 +1,10 @@
+import 'package:club_cloud/logic/cubit/sign_up_cubit.dart';
 import 'package:firebase_auth_repository/firebase_auth_repository.dart';
 import 'package:beamer/beamer.dart';
-import 'package:club_cloud/blocs/blocs.dart';
-import 'package:club_cloud/ui/sign_up/sign_up.dart';
+import 'package:club_cloud/logic/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../navigation/beamer_locations.dart';
+import 'navigation/beamer_locations.dart';
 
 class App extends StatelessWidget {
   App({
